@@ -6,6 +6,8 @@ import com.beautiful.api.column.DataColumn
 import com.beautiful.api.index.Index
 import com.beautiful.api.ops._
 import com.beautiful.api.row.DataRow
+import com.beautiful.api.writable.WritableValue
+import com.beautiful.api.writable.Writables.WritableValueLike
 import shapeless.T
 
 
@@ -16,7 +18,49 @@ import shapeless.T
   * @CreateDate: 2018/4/9 13:21
   *
   **/
-trait DataFrame extends Iterable[DataRow] {
+trait DataFrame {
+
+  def toList: Seq[Seq[WritableValue]]
+
+  def add(column: DataColumn, values: Seq[WritableValue])
+
+  def add(rows: Seq[DataRow]): DataFrame
+
+  def drop: DataFrame
+
+  def rename
+
+  def reshape(rows: Int, cols: Int)
+
+  def transpose: DataFrame
+
+  def retain: DataFrame
+
+  def reindex: DataFrame
+
+  def merge: DataFrame
+
+  def join: DataFrame
+
+  def update: DataFrame
+
+  def size: Int = getColumns.length
+
+  def isEmpty: Boolean = length == 0
+
+  def length: Int = toList.length
+
+  def fillna[T: WritableValueLike](v: T)
+
+  def dropna: DataFrame
+
+  def downsample: DataFrame
+
+  def oversample: DataFrame
+
+  def conversion: DataFrame
+
+  def semiSupervised: DataFrame
 
   def getIndex: Index
 
@@ -40,11 +84,13 @@ trait DataFrame extends Iterable[DataRow] {
 
   def to(export: Exporter): DataFrame
 
-  def toList: Seq[Seq[AnyVal]]
+  def get(row: Int, col: Int): WritableValue
 
-  def toList[T](clazz: Class[T]): Seq[T]
+  def slice(rowStart: Int, rowEnd: Int)
 
-  def toMap[K, V](keyClazz: Class[K], valueClazz: Class[K]): Seq[Map[K, V]]
+  def vizPlot(xColumn: Int, yColumn: Int): Unit
+
+  def vizCount(xColumn: Int, yColumn: Int): Unit
 
   def print(): Unit
 
@@ -54,18 +100,6 @@ trait DataFrame extends Iterable[DataRow] {
 abstract class BasicDataFrame(var index: Index, var columns: Seq[DataColumn], var datas: DataBlock[T]) extends DataFrame {
 
 
-  this () = {
-    this (new Index, Seq.empty, new DataBlock);
-  }
-
-  this (index: Index, columns: Seq[DataColumn]) = {
-    this (index, columns, new DataBlock);
-  }
-
-  override def from(loader: Loader): DataFrame = {
-    loader.addListener()
-
-  }
 }
 
 

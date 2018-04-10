@@ -1,6 +1,7 @@
 package com.beautiful.api.row;
 
 import com.beautiful.api.column.DataColumn;
+import com.beautiful.api.writable.WritableValue;
 
 import java.io.Serializable;
 
@@ -13,9 +14,9 @@ public interface DataRow extends Serializable {
 
     DataColumn[] getColumns();
 
-    Object get(int index);
+    WritableValue get(int index);
 
-    Object get(String name);
+    WritableValue get(String name);
 
 
 }
