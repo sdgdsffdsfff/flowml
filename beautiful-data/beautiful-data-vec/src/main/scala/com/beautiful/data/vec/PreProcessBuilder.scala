@@ -20,7 +20,7 @@ trait PreProcessBuilder {
 
   def addRanker(ops: Ranker): this.type
 
-  def addReducer(ops: AggregateReducer): this.type
+  def addReducer(ops: Aggregater): this.type
 
   def addOps(ops: Ops): this.type
 
@@ -55,7 +55,7 @@ object SequentialPreProcessBuilder extends PreProcessBuilder {
     this
   }
 
-  override def addReducer(reducer: AggregateReducer): SequentialPreProcessBuilder.this.type = {
+  override def addReducer(reducer: Aggregater): SequentialPreProcessBuilder.this.type = {
     opsGraph += reducer
     this
   }
@@ -95,7 +95,7 @@ object ComputerGraphPreProcessBuilder extends PreProcessBuilder {
     this
   }
 
-  override def addReducer(reducer: AggregateReducer): ComputerGraphPreProcessBuilder.this.type = {
+  override def addReducer(reducer: Aggregater): ComputerGraphPreProcessBuilder.this.type = {
     opsGraph.addVertex(reducer)
     this
 
