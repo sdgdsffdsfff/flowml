@@ -2,6 +2,7 @@ package com.beautiful.api.ops
 
 
 import com.beautiful.api.row.DataRow
+import com.beautiful.api.schema.Schema
 import com.beautiful.api.split.LoadSplit
 
 
@@ -16,9 +17,11 @@ import com.beautiful.api.split.LoadSplit
   **/
 trait Loader extends Ops {
 
+  val conf: Map[String, String]
+  val split: LoadSplit
 
 
-  def init(conf: Map[String, String], split: LoadSplit): Unit
+  def init: Schema
 
   def next: DataRow
 
