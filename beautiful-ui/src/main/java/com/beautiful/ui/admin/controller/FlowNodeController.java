@@ -2,7 +2,9 @@ package com.beautiful.ui.admin.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.beautiful.ui.core.Json;
 import com.beautiful.ui.core.TableDataSet;
+import com.beautiful.ui.core.model.NodeGroup;
 import com.beautiful.ui.core.pagemodel.NodeVO;
 import com.beautiful.ui.core.service.INodeGroupService;
 import com.beautiful.ui.core.service.INodeService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/flownode")
@@ -35,7 +38,7 @@ public class FlowNodeController {
 
     @RequestMapping(value = "/node/list", method = RequestMethod.POST)
     @ResponseBody
-    public TableDataSet nodeGroupList(@RequestBody JSONArray jsonArray, HttpServletRequest request) {
+    public TableDataSet nodeList(@RequestBody JSONArray jsonArray, HttpServletRequest request) {
         JSONObject jsonObject = TableDataSet.covertJsonArrayToJsonObject(jsonArray);
         int sEcho = Integer.valueOf(jsonObject.getString("sEcho"));
         int iDisplayStart = Integer.valueOf(jsonObject.getString("iDisplayStart"));//起始索引
@@ -43,6 +46,13 @@ public class FlowNodeController {
         String query = jsonObject.getString("sSearch");
         TableDataSet<NodeVO> tableDataSet = nodeService.findNodeInfoByQueryPager(query, iDisplayStart, iDisplayLength);
         return tableDataSet;
+    }
+
+    @RequestMapping(value = "/node/group/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Json nodeGroupList(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
+        List<NodeGroup> nodeGroupList = nodeGroupService.findAll();
+        return Json.toSuccessJson(nodeGroupList);
     }
 
     @RequestMapping(value = "/node/save", method = RequestMethod.GET)

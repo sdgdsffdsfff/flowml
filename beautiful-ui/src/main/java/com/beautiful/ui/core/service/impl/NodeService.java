@@ -46,8 +46,14 @@ public class NodeService extends BaseMongoDaoImpl<Node> implements INodeService 
                 String groupId = input.getGroupId();
                 NodeGroup group = groupService.findById(groupId);
                 NodeVO nodeVO = new NodeVO();
-                nodeVO.setNode(input);
-                nodeVO.setNodeGroup(group);
+                nodeVO.setId(input.getId());
+                nodeVO.setName(input.getName());
+                nodeVO.setComment(input.getComment());
+                nodeVO.setCreateTime(input.getCreateTime());
+                nodeVO.setGroupComment(group.getComment());
+                nodeVO.setGroupId(groupId);
+                nodeVO.setGroupName(group.getName());
+                nodeVO.setProps(input.getProps());
                 return nodeVO;
             }
         });

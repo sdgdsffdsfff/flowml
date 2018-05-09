@@ -50,7 +50,7 @@
                 <div class="row" style="margin: 10px 5px;">
                     <div class="col-xs-12 col-md-8">
                         <div class="layui-btn-group">
-                            <button class="layui-btn layui-btn-sm" href="${ctxPath!}/admin/flownode/nodeGroup/save"
+                            <button class="layui-btn layui-btn-sm" href="${ctxPath!}/admin/flownode/node/save"
                                     name="添加流程节点类型" data-toggle="openframe"><i class="layui-icon"></i></button>
                         </div>
                         <!--<button type="button" class="btn btn-outline btn-success"  >添加流程节点类型</button>-->
@@ -180,7 +180,7 @@
             "bFilter": false,
             "serverSide": true,
             "pageLength": 40,
-            "sAjaxSource": "${ctxPath!}/admin/flownode/nodeGroup/list",
+            "sAjaxSource": "${ctxPath!}/admin/flownode/node/list",
             "fnServerData": function (sSource, aoData, fnCallback) {
                 $.ajax({
                     url: sSource,//这个就是请求地址对应sAjaxSource
@@ -198,13 +198,13 @@
             },
             "columns": [
 
-                {"data": null},
-                {"data": "node.name"},
-                {"data": "nodeGroup.name"},
-                {"data": "node.props"},
-                {"data": "node.comment"},
-                {"data": "node.sort"},
-                {"data": "node.createTime"},
+                {"data": "groupId"},
+                {"data": "name"},
+                {"data": "groupName"},
+                {"data": "props"},
+                {"data": "comment"},
+                {"data": "sort"},
+                {"data": "createTime"},
                 {"data": "node.id"}
             ],
             "fnDrawCallback": function () {
@@ -225,7 +225,7 @@
                     }
                 },
                 {
-                    'targets': 3,
+                    'targets': 5,
                     'searchable': false,
                     'orderable': false,
                     'className': 'dt-body-center',
@@ -242,7 +242,7 @@
                     }
                 },
                 {
-                    'targets': 4,
+                    'targets': 6,
                     'searchable': false,
                     'orderable': false,
                     'className': 'dt-body-center',
@@ -253,7 +253,7 @@
                     }
                 },
                 {
-                    'targets': 5,
+                    'targets': 7,
                     'searchable': false,
                     'orderable': false,
                     'className': 'dt-body-center',
@@ -289,7 +289,7 @@
     }
 
     function editRecord(id) {
-        var url = "${ctxPath!}/admin/flownode/nodeGroup/save?id=" + id;
+        var url = "${ctxPath!}/admin/flownode/node/save?id=" + id;
         var name = "节点类型编辑";
         layer.open({
             type: 2,
@@ -307,7 +307,7 @@
         layer.confirm('删除须谨慎，确认要删除吗？', function (index) {
             //ajax
             $.ajax({
-                url: '${ctxPath!}/admin/flownode/nodeGroup/delete',//这个就是请求地址对应sAjaxSource
+                url: '${ctxPath!}/admin/flownode/node/delete',//这个就是请求地址对应sAjaxSource
                 data: JSON.stringify({id: id}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
                 type: 'post',
                 dataType: 'json',
@@ -335,7 +335,7 @@
     function upRecordSort(id) {
 
         $.ajax({
-            url: '${ctxPath!}/admin/flownode/nodeGroup/changeSort',//这个就是请求地址对应sAjaxSource
+            url: '${ctxPath!}/admin/flownode/node/changeSort',//这个就是请求地址对应sAjaxSource
             data: JSON.stringify({id: id, type: "up"}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
             type: 'post',
             dataType: 'json',
@@ -361,7 +361,7 @@
 
     function downRecordSort(id) {
         $.ajax({
-            url: '${ctxPath!}/admin/flownode/nodeGroup/changeSort',//这个就是请求地址对应sAjaxSource
+            url: '${ctxPath!}/admin/flownode/node/changeSort',//这个就是请求地址对应sAjaxSource
             data: JSON.stringify({id: id, type: "down"}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
             type: 'post',
             dataType: 'json',
