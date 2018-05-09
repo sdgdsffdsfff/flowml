@@ -261,7 +261,7 @@ public class BaseMongoDaoImpl<T> implements BaseMongoDao<T> {
     }
 
     public GridFSDBFile findOneFile(String id) {
-        GridFSDBFile gridFsdbFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(new ObjectId(id))));
+        GridFSDBFile gridFsdbFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
         return gridFsdbFile;
     }
 
@@ -279,7 +279,7 @@ public class BaseMongoDaoImpl<T> implements BaseMongoDao<T> {
 
     public void deleteFile(String id) {
         //String id = "5702deyu6d8bba0d6f2e45e4";
-        gridFsTemplate.delete(new Query(Criteria.where("_id").is(new ObjectId(id))));
+        gridFsTemplate.delete(new Query(Criteria.where("_id").is(id)));
     }
 
     public List<GridFsResource> findMatchFiles(String matcher) {
@@ -405,7 +405,7 @@ public class BaseMongoDaoImpl<T> implements BaseMongoDao<T> {
         if (id == null || "".equals(id.trim()))
             return null;
         // 根据ID更新
-        Query query = new Query(Criteria.where("_id").is(getObjectIdValue(id)));
+        Query query = new Query(Criteria.where("_id").is(id));
         System.out.println(query.toString());
         Update update = getUpdateObj(entity);
         if (update == null) {
@@ -447,22 +447,26 @@ public class BaseMongoDaoImpl<T> implements BaseMongoDao<T> {
     }
 
     public boolean switchStatus(String id, Integer status) {
-        Query query = new Query(Criteria.where("_id").is(getObjectIdValue(id)));
+        Query query = new Query(Criteria.where("_id").is(id));
         Update update = new Update().set("status", status);
         updateOne(query, update);
         return true;
     }
 
-    public void deleteByIds(List<String> ids) {
+    public void softDeleteByIds(List<String> ids) {
         Query query = new Query(Criteria.where("_id").in(ids));
         Update update = new Update().set("del", 1);
         update(query, update);
     }
 
-    public void deleteById(String id) {
-        Query query = new Query(Criteria.where("_id").is(new ObjectId(id)));
+    public void softDeleteById(String id) {
+        Query query = new Query(Criteria.where("_id").is(id));
         Update update = new Update().set("del", 1);
         update(query, update);
+    }
+
+    public void hardDeleteById(String id) {
+        remove(new Query(Criteria.where("_id").is(id)));
     }
 
     public List<T> findAllEnableList() {

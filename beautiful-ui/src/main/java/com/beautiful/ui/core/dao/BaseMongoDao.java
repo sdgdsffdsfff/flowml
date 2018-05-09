@@ -136,9 +136,11 @@ public interface BaseMongoDao<T> {
 
     public boolean switchStatus(String id, Integer status);
 
-    public void deleteByIds(List<String> ids);
+    public void softDeleteByIds(List<String> ids);
 
-    public void deleteById(String id);
+    public void softDeleteById(String id);
+
+    public void hardDeleteById(String id);
 
     public List<T> findAllEnableList();
 

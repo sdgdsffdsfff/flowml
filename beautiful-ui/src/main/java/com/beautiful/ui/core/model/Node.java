@@ -17,6 +17,8 @@ public class Node implements Serializable {
 
     private String comment;//描述文字
 
+    private Integer sort;//在每一个组里面的顺序
+
     private Long createTime;
 
     private Long updateTime;//更新时间
@@ -78,5 +80,13 @@ public class Node implements Serializable {
 
     public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }

@@ -11,11 +11,14 @@ public class NodeGroup implements Serializable {
 
     private String name;//节点组名称
 
+    private String comment;//描述
+
     private Integer sort;//顺序
 
     private Long createTime;
 
     private Long updateTime;
+
 
     public String getId() {
         return id;
@@ -39,6 +42,14 @@ public class NodeGroup implements Serializable {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Long getCreateTime() {

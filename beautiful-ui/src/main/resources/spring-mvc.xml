@@ -11,7 +11,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
         ">
     <!-- 加载配置属性文件 -->
-    <context:component-scan base-package="com.beautiful.ui.controller"
+    <context:component-scan base-package="com.beautiful.ui.*.controller"
                             use-default-filters="false">
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>
@@ -92,7 +92,7 @@
     <bean id="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration"
           init-method="init">
         <property name="configFileResource" value="classpath:beetl.properties"/>
-
+        <!--<property name="root" value="/WEB-INF/view"/>-->
         <!--
         <property name="functions">
             <map>
@@ -111,6 +111,7 @@
         </property>
          -->
     </bean>
+
 
     <bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
         <property name="suffix" value=".html"/>
