@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>一站式机器学习平台</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="${ctxPath!}/statics/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="${ctxPath!}/statics/vendor/bootstrap-select2/css/select2.css" rel="stylesheet">
+
+    <link href="${ctxPath!}/statics/vendor/bootstrap-select2/select2-bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="${ctxPath!}/statics/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="${ctxPath!}/statics/css/sb-admin-2.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="${ctxPath!}/statics/vendor/layui/css/layui.css" media="all">
+    <!-- Custom Fonts -->
+    <link href="${ctxPath!}/statics/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!-- Navigation -->
+<div id="full-page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">流程节点创建</h1>
+
+
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    节点类型表单
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form" method="post" id="form-node-${has(id)?'edit':'add'}">
+                                <%if(has(id)){%>
+                                <input type="hidden" class="input-text" value="${id!}" name="id">
+                                <%}%>
+                                <div class="form-group">
+                                    <label>节点类型名称</label>
+                                    <input class="form-control" name="name" value="${nodeGroup.name!}">
+                                    <p class="help-block">数据节点类型名称</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>节点组选择</label>
+                                    <select id="nodeGroupSelect" class="form-control select2-single">
+                                        <option></option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>简介描述</label>
+                                    <textarea class="form-control" rows="3"
+                                              name="comment">${nodeGroup.comment!}</textarea>
+                                </div>
+
+
+                                <button type="submit" class="btn btn-default">保存</button>
+                                <button type="reset" class="btn btn-default">重设</button>
+                            </form>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+
+
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /#page-wrapper -->
+
+
+<!-- jQuery -->
+
+<script src="${ctxPath!}/statics/vendor/jquery/jquery.min.js"></script>
+<script src="${ctxPath!}/statics/js/jquery.serializejson.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="${ctxPath!}/statics/vendor/metisMenu/metisMenu.min.js"></script>
+<script src="${ctxPath!}/statics/js/jquery-ui.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="${ctxPath!}/statics/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript"
+        src="${ctxPath!}/statics/vendor/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/jquery.validation/1.14.0/messages_zh.min.js"></script>
+
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/layui/layui.all.js"></script>
+
+<script src="${ctxPath!}/statics/vendor/bootstrap-select2/js/select2.full.js"/>
+<script src="${ctxPath!}/statics/vendor/bootstrap-select2/js/i18n/zh-CN.js"/>
+<!-- Custom Theme JavaScript -->
+<script src="${ctxPath!}/statics/js/sb-admin-2.js"></script>
+<script type="text/javascript">
+    function initSelectGroup() {
+        $.ajax({
+            url: '${ctxPath!}/admin/flownode/node/group/list',//这个就是请求地址对应sAjaxSource
+            data: JSON.stringify({}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,
+            success: function (result) {
+                if (result.status == 200) {
+                    var datas = result.obj;
+                    var selects = [];
+                    for (index in datas) {
+                        selects.push({id: datas[index].id, text: datas[index].name});
+                    }
+                    $("#nodeGroupSelect").select2({
+                        theme: "bootstrap",
+                        placeholder: "选择数据节点组类型",
+                        data: selects
+                    }).on("change", function (e) {
+                        var groupId = $("#nodeGroupSelect").val();
+                    });
+                } else {
+                    layer.msg(result.msg, {icon: 1, time: 2000});
+                }
+                //parent.$('.btn-refresh').click();
+                //window.location.reload();
+            },
+            error: function (msg) {
+                layer.msg('操作失败,服务器错误', {icon: 1, time: 1000});
+            }
+        });
+
+    }
+
+
+    $(function () {
+        initSelectGroup();
+        $('#form-nodegroup-${has(id)?"edit":"add"}').validate({
+            onkeyup: false,
+            focusCleanup: true,
+            success: "valid",
+            submitHandler: function (form) {
+                //ajax提交
+                var formdata = $(form).serializeJSON();
+                $.ajax({
+                    url: '${ctxPath!}/admin/flownode/nodeGroup/save',//这个就是请求地址对应sAjaxSource
+                    data: JSON.stringify(formdata),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: "application/json",
+                    async: true,
+                    success: function (result) {
+                        if (result.status == 200) {
+                            layer.alert('保存成功', function (cindex) {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.location.reload();
+                                parent.layer.close(index);
+                                layer.close(cindex);
+                            });
+
+
+                        } else {
+                            layer.msg(result.msg, {icon: 1, time: 2000});
+                        }
+
+                    },
+                    error: function (msg) {
+                        layer.msg('服务器错误', {icon: 1, time: 1000});
+                    }
+                });
+
+            }
+        });
+
+    });
+
+
+</script>
+
+
+</body>
+
+</html>

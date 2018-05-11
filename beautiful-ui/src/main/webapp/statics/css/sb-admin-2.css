@@ -11,6 +11,21 @@ body {
     width: 100%;
 }
 
+#full-page-wrapper {
+    padding: 0 15px;
+    min-height: 568px;
+    background-color: white;
+}
+
+@media (min-width: 768px) {
+    #full-page-wrapper {
+        position: inherit;
+        margin: 0 0 0 0px;
+        padding: 0 30px;
+        border-left: 1px solid #e7e7e7;
+    }
+}
+
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;
