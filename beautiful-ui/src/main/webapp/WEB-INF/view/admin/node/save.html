@@ -33,6 +33,14 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+        .form-group {
+            padding-left: 15px;
+            padding-right: 15px;
+
+        }
+
+    </style>
 
 </head>
 
@@ -50,24 +58,24 @@
 
 
     <!-- /.row -->
-    <div class="row">
+    <div class="row" style="padding:10px;">
         <div class="col-lg-12">
 
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    节点类型表单
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <form role="form" method="post" id="form-node-${has(id)?'edit':'add'}">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form role="form" method="post" action="#" id="form-node-${has(id)?'edit':'add'}"
+                          style="padding:10px;margin:10px;">
+                        <fieldset class="layui-elem-field site-demo-button">
+                            <legend>节点基本属性添加</legend>
+                            <div>
+
                                 <%if(has(id)){%>
                                 <input type="hidden" class="input-text" value="${id!}" name="id">
                                 <%}%>
                                 <div class="form-group">
                                     <label>节点类型名称</label>
-                                    <input class="form-control" name="name" value="${nodeGroup.name!}">
+                                    <input class="form-control" name="name" value="">
                                     <p class="help-block">数据节点类型名称</p>
                                 </div>
                                 <div class="form-group">
@@ -79,22 +87,99 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>简介描述</label>
+                                    <label>节点描述</label>
                                     <textarea class="form-control" rows="3"
-                                              name="comment">${nodeGroup.comment!}</textarea>
+                                              name="comment"></textarea>
                                 </div>
 
 
-                                <button type="submit" class="btn btn-default">保存</button>
-                                <button type="reset" class="btn btn-default">重设</button>
-                            </form>
-                        </div>
-                        <!-- /.col-lg-6 (nested) -->
+                            </div>
+                        </fieldset>
 
-                    </div>
-                    <!-- /.row (nested) -->
+
+                        <fieldset class="layui-elem-field site-demo-button" id="expandPropsFieldSet">
+                            <legend>动态属性添加
+                                <div class="layui-btn-group">
+                                    <button class="layui-btn layui-btn-primary layui-btn-sm"
+                                            onclick="addDynamicPropLine();return false">添加属性列
+                                    </button>
+                                </div>
+                            </legend>
+                            <div id="expandPropsFieldDiv" style="padding:10px;">
+
+                                <div class="row propelement" style="margin: 10px 5px;">
+
+                                    <div class="col-xs-6 col-md-2">
+
+                                        <div class="form-group">
+                                            <label>属性名</label>
+                                            <input class="form-control" name="prop[][name]" value="">
+                                            <p class="help-block">动态属性名</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xs-6 col-md-3">
+                                        <div class="form-group">
+                                            <label>属性输入类型</label>
+                                            <select class="proptypeselect form-control select2-single"
+                                                    name="prop[][type]">
+                                                <option value="input">input</option>
+                                                <option value="select">select</option>
+                                                <option value="multiselect">multiselect</option>
+                                                <option value="radio">radio</option>
+                                                <option value="checkbox">checkbox</option>
+                                                <option value="file">fileUpload</option>
+                                                <option value="dateSelect">dateSelect</option>
+                                                <option value="dateRanger">dateRanger</option>
+                                                <option value="ranger">ranger</option>
+                                            </select>
+                                            <p class="help-block">动态属性输入类型</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xs-6 col-md-2">
+                                        <div class="form-group">
+                                            <label>属性中文描述</label>
+                                            <input class="form-control" name="prop[][title]" value="">
+                                            <p class="help-block">属性中文描述</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xs-6 col-md-5">
+                                        <div class="form-group">
+                                            <label>属性值设置</label>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <input class="form-control" name="prop[][optionValue]" value=""
+                                                           placeholder="可选值">
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input class="form-control" name="prop[][defaultValue]" value=""
+                                                           placeholder="默认值">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button class="layui-btn layui-btn-sm"
+                                                            onClick="deleteDynamicPropLine(this);return false;"><i
+                                                            class="layui-icon"></i></button>
+                                                </div>
+                                            </div>
+                                            <p class="help-block">属性可选值、属性默认值设置，可选值多个用,号隔开</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+
+
+                        <button type="submit" class="btn btn-default">保存</button>
+                        <button type="reset" class="btn btn-default">重设</button>
+                    </form>
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.col-lg-6 (nested) -->
+
             </div>
 
 
@@ -129,6 +214,15 @@
 <!-- Custom Theme JavaScript -->
 <script src="${ctxPath!}/statics/js/sb-admin-2.js"></script>
 <script type="text/javascript">
+    function addDynamicPropLine() {
+        var proplength = $("#expandPropsFieldSet").find(".propelement").length;
+        $("#expandPropsFieldDiv").append('<div class="row propelement"style="margin: 10px 5px;"><div class="col-xs-6 col-md-2"><div class="form-group"><label>属性名</label><input class="form-control"name="prop[][name]"value=""><p class="help-block">动态属性名</p></div></div><div class="col-xs-6 col-md-3"><div class="form-group"><label>属性输入类型</label><select class="proptypeselect form-control select2-single"name="prop[][type]"><option value="input">input</option><option value="select">select</option><option value="multiselect">multiselect</option><option value="radio">radio</option><option value="checkbox">checkbox</option><option value="file">fileUpload</option><option value="dateSelect">dateSelect</option><option value="dateRanger">dateRanger</option><option value="ranger">ranger</option></select><p class="help-block">动态属性输入类型</p></div></div><div class="col-xs-6 col-md-2"><div class="form-group"><label>属性中文描述</label><input class="form-control"name="prop[][title]"value=""><p class="help-block">属性中文描述</p></div></div><div class="col-xs-6 col-md-5"><div class="form-group"><label>属性值设置</label><div class="row"><div class="col-md-5"><input class="form-control"name="prop[][optionValue]"value=""placeholder="可选值"></div><div class="col-md-5"><input class="form-control"name="prop[][defaultValue]"value=""placeholder="默认值"></div><div class="col-md-2"><button class="layui-btn layui-btn-sm"onClick="deleteDynamicPropLine(this);return false;"><i class="layui-icon"></i></button></div></div><p class="help-block">属性可选值、属性默认值设置，可选值多个用,号隔开</p></div></div></div>');
+        //alert($("#expandPropsFieldSet").find(".propelement").length);
+    }
+
+    function deleteDynamicPropLine(ele) {
+        $(ele).parents("div.propelement").remove();
+    }
     function initSelectGroup() {
         $.ajax({
             url: '${ctxPath!}/admin/flownode/node/group/list',//这个就是请求地址对应sAjaxSource
