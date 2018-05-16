@@ -64,15 +64,13 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <form role="form" method="post" action="#" id="form-node-${has(id)?'edit':'add'}"
+                    <form role="form" method="post" action="#" id="form-node-add"
                           style="padding:10px;margin:10px;">
                         <fieldset class="layui-elem-field site-demo-button">
                             <legend>节点基本属性添加</legend>
                             <div>
 
-                                <%if(has(id)){%>
-                                <input type="hidden" class="input-text" value="${id!}" name="id">
-                                <%}%>
+
                                 <div class="form-group">
                                     <label>节点类型名称</label>
                                     <input class="form-control" name="name" value="">
@@ -80,7 +78,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>节点组选择</label>
-                                    <select id="nodeGroupSelect" class="form-control select2-single">
+                                    <select id="nodeGroupSelect" class="form-control select2-single" name="groupId">
                                         <option></option>
 
                                     </select>
@@ -123,15 +121,15 @@
                                             <label>属性输入类型</label>
                                             <select class="proptypeselect form-control select2-single"
                                                     name="prop[][type]">
-                                                <option value="input">input</option>
-                                                <option value="select">select</option>
-                                                <option value="multiselect">multiselect</option>
-                                                <option value="radio">radio</option>
-                                                <option value="checkbox">checkbox</option>
-                                                <option value="file">fileUpload</option>
-                                                <option value="dateSelect">dateSelect</option>
-                                                <option value="dateRanger">dateRanger</option>
-                                                <option value="ranger">ranger</option>
+                                                <option value="input">输入框</option>
+                                                <option value="select">单选框</option>
+                                                <option value="multiselect">多选框</option>
+                                                <option value="radio">单选按钮</option>
+                                                <option value="checkbox">多选按钮</option>
+                                                <option value="file">文件上传</option>
+                                                <option value="dateSelect">日期选择</option>
+                                                <option value="dateRanger">日期范围选择</option>
+                                                <option value="range">范围框</option>
                                             </select>
                                             <p class="help-block">动态属性输入类型</p>
                                         </div>
@@ -261,7 +259,7 @@
 
     $(function () {
         initSelectGroup();
-        $('#form-nodegroup-${has(id)?"edit":"add"}').validate({
+        $('#form-node-add').validate({
             onkeyup: false,
             focusCleanup: true,
             success: "valid",
@@ -269,7 +267,7 @@
                 //ajax提交
                 var formdata = $(form).serializeJSON();
                 $.ajax({
-                    url: '${ctxPath!}/admin/flownode/nodeGroup/save',//这个就是请求地址对应sAjaxSource
+                    url: '${ctxPath!}/admin/flownode/node/save',//这个就是请求地址对应sAjaxSource
                     data: JSON.stringify(formdata),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
                     type: 'post',
                     dataType: 'json',

@@ -1,9 +1,10 @@
 package com.beautiful.ui.core.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.beautiful.ui.core.TableDataSet;
 import com.beautiful.ui.core.dao.BaseMongoDaoImpl;
-import com.beautiful.ui.core.model.Node;
-import com.beautiful.ui.core.model.NodeGroup;
+import com.beautiful.ui.core.model.type.Node;
+import com.beautiful.ui.core.model.type.NodeGroup;
 import com.beautiful.ui.core.pagemodel.NodeVO;
 import com.beautiful.ui.core.service.INodeGroupService;
 import com.beautiful.ui.core.service.INodeService;
@@ -53,7 +54,8 @@ public class NodeService extends BaseMongoDaoImpl<Node> implements INodeService 
                 nodeVO.setGroupComment(group.getComment());
                 nodeVO.setGroupId(groupId);
                 nodeVO.setGroupName(group.getName());
-                nodeVO.setProps(input.getProps());
+                nodeVO.setAttributes(JSON.toJSONString(input.getAttributes()));
+                nodeVO.setSort(input.getSort());
                 return nodeVO;
             }
         });
@@ -63,5 +65,35 @@ public class NodeService extends BaseMongoDaoImpl<Node> implements INodeService 
         tableDataSet.setiTotalDisplayRecords(count);
         tableDataSet.setCpage((start - 1 + limit) / limit + 1);
         return tableDataSet;
+    }
+
+    @Override
+    public Integer findMaxSort() {
+        Query query = new Query();
+        query.with(new Sort(Sort.Direction.DESC, "sort"));
+        query.limit(1);
+        Node node = findOne(query);
+        if (node == null) return 0;
+        return node.getSort();
+    }
+
+    @Override
+    public Node findByNearUp(Integer sort) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("sort").lt(sort));
+        query.with(new Sort(Sort.Direction.DESC, "sort"));
+        query.limit(1);
+        Node node = findOne(query);
+        return node;
+    }
+
+    @Override
+    public Node findByNearDown(Integer sort) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("sort").gt(sort));
+        query.with(new Sort(Sort.Direction.ASC, "sort"));
+        query.limit(1);
+        Node node = findOne(query);
+        return node;
     }
 }

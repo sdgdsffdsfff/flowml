@@ -77,3 +77,4 @@ beautiful-ui/target/
 /beautiful-ui/beautiful-ui.iml
 /beautiful-ui/target/
 /beautiful.iml
+!/beautiful-ui/src/main/java/com/beautiful/ui/core/model/NodeInput.java

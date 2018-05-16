@@ -74,14 +74,15 @@
                         <th scope="col" colspan="9">流程节点类型列表</th>
                     </tr>
                     <tr class="text-c">
-                        <th width="10%">序号</th>
+                        <th width="8%">序号</th>
                         <th width="10%">节点名称</th>
                         <th width="10%">组名称</th>
-                        <th width="15%">节点属性</th>
-                        <th>描述简介</th>
+                        <th width="10%">节点属性</th>
+                        <th width="10%">输入属性</th>
+                        <th>节点描述</th>
                         <th width="15%">顺序</th>
                         <th>创建时间</th>
-                        <th width="20%">操作</th>
+                        <th width="15%">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -124,7 +125,20 @@
 
 
 <script type="text/javascript">
-
+    function xtips(content) {
+        console.log(unescape(content));
+        //layer.tips('xxxxxx');
+        //layer.msg(unescape(content));
+        var str = JSON.stringify(JSON.parse(unescape(content)), null, 2);
+        layer.open({
+            type: 1,
+            shade: false,
+            title: false, //不显示标题
+            area: ['600px', '550px'], //宽高
+            content: '<pre class="layui-code"  lay-skin="notepad">' + str + '</pre>'
+        });
+        layui.code();
+    }
     Date.prototype.Format = function (fmt) { //author: meizz
         var o = {
             "M+": this.getMonth() + 1, //月份
@@ -202,6 +216,7 @@
                 {"data": "name"},
                 {"data": "groupName"},
                 {"data": "props"},
+                {"data": "attributes"},
                 {"data": "comment"},
                 {"data": "sort"},
                 {"data": "createTime"},
@@ -225,7 +240,30 @@
                     }
                 },
                 {
-                    'targets': 5,
+                    'targets': 3,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+                        if (data == 'null') return '--';
+                        console.log(data);
+                        var sdata = escape(data);
+                        return "&nbsp;&nbsp;<a  href=\"javascript:;\"  onclick=\"xtips('" + sdata + "');\"   style='color:blue;'>预览属性</a>";
+                    }
+                }, {
+                    'targets': 4,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+                        if (data == undefined) return '--';
+                        console.log(data);
+                        var sdata = escape(data);
+                        return "&nbsp;&nbsp;<a  href=\"javascript:;\"  onclick=\"xtips('" + sdata + "');\"   style='color:blue;'>预览属性</a>";
+                    }
+                },
+                {
+                    'targets': 6,
                     'searchable': false,
                     'orderable': false,
                     'className': 'dt-body-center',
@@ -242,7 +280,7 @@
                     }
                 },
                 {
-                    'targets': 6,
+                    'targets': 7,
                     'searchable': false,
                     'orderable': false,
                     'className': 'dt-body-center',
@@ -253,7 +291,7 @@
                     }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'searchable': false,
                     'orderable': false,
                     'className': 'dt-body-center',
@@ -291,6 +329,7 @@
     function editRecord(id) {
         var url = "${ctxPath!}/admin/flownode/node/save?id=" + id;
         var name = "节点类型编辑";
+        //检测是否可以编辑 未解绑connction 不允许编辑。
         layer.open({
             type: 2,
             title: name,

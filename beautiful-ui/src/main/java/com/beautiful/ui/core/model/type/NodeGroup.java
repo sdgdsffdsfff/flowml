@@ -1,4 +1,4 @@
-package com.beautiful.ui.core.model;
+package com.beautiful.ui.core.model.type;
 
 import org.springframework.data.annotation.Id;
 
