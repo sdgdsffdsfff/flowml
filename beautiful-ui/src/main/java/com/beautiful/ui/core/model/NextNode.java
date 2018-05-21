@@ -6,17 +6,16 @@ import org.springframework.data.annotation.Id;
 /**
  * @description: ${description}
  * @author: zhuyuping
- * @create: 2018-05-16 18:08
+ * @create: 2018-05-16 18:54
  **/
-public class OperationNode extends DataNode {
-
+public class NextNode extends DataNode {
     @Id
     private String id;
     private String uid;
     private Node reference;//模式
 
-    public OperationNode() {
-        setNodeType(DataNodeType.OPERATION);
+    public NextNode() {
+        setNodeType(DataNodeType.NEXT);
     }
 
     public String getId() {
