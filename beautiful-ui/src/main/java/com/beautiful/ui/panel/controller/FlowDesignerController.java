@@ -2,8 +2,8 @@ package com.beautiful.ui.panel.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.beautiful.ui.core.Json;
-import com.beautiful.ui.core.model.Node;
-import com.beautiful.ui.core.model.NodeGroup;
+import com.beautiful.ui.core.model.type.Node;
+import com.beautiful.ui.core.model.type.NodeGroup;
 import com.beautiful.ui.core.service.INodeGroupService;
 import com.beautiful.ui.core.service.INodeService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package com.beautiful.ui.core.service;
 
 import com.beautiful.ui.core.TableDataSet;
 import com.beautiful.ui.core.dao.BaseMongoDao;
-import com.beautiful.ui.core.model.Node;
+import com.beautiful.ui.core.model.type.Node;
 import com.beautiful.ui.core.pagemodel.NodeVO;
 
 import java.util.List;
@@ -17,4 +17,10 @@ public interface INodeService extends BaseMongoDao<Node> {
     List<Node> findNodesByGroupId(String groupId);
 
     TableDataSet<NodeVO> findNodeInfoByQueryPager(String query, int iDisplayStart, int iDisplayLength);
+
+    Integer findMaxSort();
+
+    Node findByNearUp(Integer sort);
+
+    Node findByNearDown(Integer sort);
 }

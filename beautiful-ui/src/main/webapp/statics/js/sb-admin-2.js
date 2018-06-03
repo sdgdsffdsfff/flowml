@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 var layer = layui.layer;
-
+layui.code();
 $(function () {
     $('#side-menu').metisMenu();
 

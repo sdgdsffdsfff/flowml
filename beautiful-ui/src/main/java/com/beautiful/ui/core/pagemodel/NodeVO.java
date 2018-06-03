@@ -1,7 +1,6 @@
 package com.beautiful.ui.core.pagemodel;
 
 import java.io.Serializable;
-import java.util.Map;
 
 public class NodeVO implements Serializable {
 
@@ -11,7 +10,7 @@ public class NodeVO implements Serializable {
 
     private String name;//节点名字
 
-    private Map<String, String> props;//节点属性
+    private String attributes;
 
     private String comment;//描述文字
 
@@ -33,6 +32,7 @@ public class NodeVO implements Serializable {
         this.id = id;
     }
 
+
     public String getGroupId() {
         return groupId;
     }
@@ -49,12 +49,13 @@ public class NodeVO implements Serializable {
         this.name = name;
     }
 
-    public Map<String, String> getProps() {
-        return props;
+
+    public String getAttributes() {
+        return attributes;
     }
 
-    public void setProps(Map<String, String> props) {
-        this.props = props;
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
     }
 
     public String getComment() {

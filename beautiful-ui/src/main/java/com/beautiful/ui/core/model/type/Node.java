@@ -1,9 +1,9 @@
-package com.beautiful.ui.core.model;
+package com.beautiful.ui.core.model.type;
 
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.List;
 
 public class Node implements Serializable {
     @Id
@@ -13,7 +13,7 @@ public class Node implements Serializable {
 
     private String name;//节点名字
 
-    private Map<String, String> props;//节点属性
+    private List<NodeInput> attributes;
 
     private String comment;//描述文字
 
@@ -21,7 +21,7 @@ public class Node implements Serializable {
 
     private Long createTime;
 
-    private Long updateTime;//更新时间
+    private Long updateTime;//更新时间'
 
     public Node() {
     }
@@ -50,14 +50,6 @@ public class Node implements Serializable {
         this.name = name;
     }
 
-    public Map<String, String> getProps() {
-        return props;
-    }
-
-    public void setProps(Map<String, String> props) {
-        this.props = props;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -80,6 +72,14 @@ public class Node implements Serializable {
 
     public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<NodeInput> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<NodeInput> attributes) {
+        this.attributes = attributes;
     }
 
     public Integer getSort() {
