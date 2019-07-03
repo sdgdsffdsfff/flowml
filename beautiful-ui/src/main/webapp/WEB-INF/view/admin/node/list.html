@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>一站式机器学习平台</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="${ctxPath!}/statics/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="${ctxPath!}/statics/vendor/bootstrap-select2/css/select2.css" rel="stylesheet">
+
+    <link href="${ctxPath!}/statics/vendor/bootstrap-select2/select2-bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="${ctxPath!}/statics/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="${ctxPath!}/statics/css/sb-admin-2.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="${ctxPath!}/statics/vendor/layui/css/layui.css" media="all">
+    <!-- Custom Fonts -->
+    <link href="${ctxPath!}/statics/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <% include("/basic/top.html"){} %>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">流程节点组类型创建</h1>
+                <div class="row" style="margin: 10px 5px;">
+                    <div class="col-xs-12 col-md-8">
+                        <div class="layui-btn-group">
+                            <button class="layui-btn layui-btn-sm" href="${ctxPath!}/admin/flownode/node/save"
+                                    name="添加流程节点类型" data-toggle="openframe"><i class="layui-icon"></i></button>
+                        </div>
+                        <!--<button type="button" class="btn btn-outline btn-success"  >添加流程节点类型</button>-->
+                    </div>
+                    <div class="col-xs-6 col-md-4"></div>
+                </div>
+
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- Modal -->
+        <div id="modal-container"></div>
+
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+
+                <table id="listtable" class="table table-striped table-hover" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th scope="col" colspan="9">流程节点类型列表</th>
+                    </tr>
+                    <tr class="text-c">
+                        <th width="8%">序号</th>
+                        <th width="10%">节点名称</th>
+                        <th width="10%">组名称</th>
+                        <th width="10%">节点属性</th>
+                        <th width="10%">输入属性</th>
+                        <th>节点描述</th>
+                        <th width="15%">顺序</th>
+                        <th>创建时间</th>
+                        <th width="15%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+
+                </table>
+
+
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+
+<script src="${ctxPath!}/statics/vendor/jquery/jquery.min.js"></script>
+<script src="${ctxPath!}/statics/js/jquery.serializejson.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="${ctxPath!}/statics/vendor/metisMenu/metisMenu.min.js"></script>
+<script src="${ctxPath!}/statics/js/jquery-ui.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="${ctxPath!}/statics/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/layui/layui.all.js"></script>
+
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/datatables/1.10.0/dataTables.bootstrap.min.js"></script>
+
+
+<script src="${ctxPath!}/statics/vendor/bootstrap-select2/js/select2.full.js"/>
+<script src="${ctxPath!}/statics/vendor/bootstrap-select2/js/i18n/zh-CN.js"/>
+<!-- Custom Theme JavaScript -->
+<script src="${ctxPath!}/statics/js/sb-admin-2.js"></script>
+
+
+<script type="text/javascript">
+    function xtips(content) {
+        console.log(unescape(content));
+        //layer.tips('xxxxxx');
+        //layer.msg(unescape(content));
+        var str = JSON.stringify(JSON.parse(unescape(content)), null, 2);
+        layer.open({
+            type: 1,
+            shade: false,
+            title: false, //不显示标题
+            area: ['600px', '550px'], //宽高
+            content: '<pre class="layui-code"  lay-skin="notepad">' + str + '</pre>'
+        });
+        layui.code();
+    }
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+    $("[data-toggle='openframe']").click(function (e) {
+        /* Prevent Default*/
+        e.preventDefault();
+
+        /* Parameters */
+        var url = $(this).attr('href');
+        var name = $(this).attr('name');
+        layer.open({
+            type: 2,
+            title: name,
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['85%', '92%'],
+            content: url
+        });
+
+        // var container = "#" + $(this).attr('data-container');
+        //
+        // /* XHR */
+        // $.get(url).done(function(data) {
+        //     $(container).html(data).modal();
+        // }).success(function() { $('input:text:visible:first').focus() });
+
+    });
+
+
+    function initDataTables() {
+        return $('#listtable').DataTable({
+            "language": {
+                "emptyTable": "无可用数据",
+                "infoEmpty": "没有记录可以显示"
+
+            },
+            "searching": true,
+            "aaSorting": [[1, "desc"]],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "processing": true,
+            "bFilter": false,
+            "serverSide": true,
+            "pageLength": 40,
+            "sAjaxSource": "${ctxPath!}/admin/flownode/node/list",
+            "fnServerData": function (sSource, aoData, fnCallback) {
+                $.ajax({
+                    url: sSource,//这个就是请求地址对应sAjaxSource
+                    data: JSON.stringify(aoData),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: "application/json",
+                    async: true,
+                    success: function (result) {
+                        fnCallback(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+                    },
+                    error: function (msg) {
+                    }
+                });
+            },
+            "columns": [
+
+                {"data": "groupId"},
+                {"data": "name"},
+                {"data": "groupName"},
+                {"data": "props"},
+                {"data": "attributes"},
+                {"data": "comment"},
+                {"data": "sort"},
+                {"data": "createTime"},
+                {"data": "node.id"}
+            ],
+            "fnDrawCallback": function () {
+                var api = this.api();
+                var startIndex = api.context[0]._iDisplayStart;//获取到本页开始的条数
+                api.column(0).nodes().each(function (cell, i) {
+                    cell.innerHTML = startIndex + i + 1;
+                });
+            },
+            "aoColumnDefs": [
+                {
+                    'targets': 0,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+                        return '<input type="checkbox" name="id" value="' + data + '">';
+                    }
+                },
+                {
+                    'targets': 3,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+                        if (data == 'null') return '--';
+                        console.log(data);
+                        var sdata = escape(data);
+                        return "&nbsp;&nbsp;<a  href=\"javascript:;\"  onclick=\"xtips('" + sdata + "');\"   style='color:blue;'>预览属性</a>";
+                    }
+                }, {
+                    'targets': 4,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+                        if (data == undefined) return '--';
+                        console.log(data);
+                        var sdata = escape(data);
+                        return "&nbsp;&nbsp;<a  href=\"javascript:;\"  onclick=\"xtips('" + sdata + "');\"   style='color:blue;'>预览属性</a>";
+                    }
+                },
+                {
+                    'targets': 6,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+
+                        return data + '&nbsp; &nbsp;&nbsp;&nbsp;<div class="layui-btn-group">\n' +
+                            '  <button class="layui-btn layui-btn-sm" onclick="upRecordSort(\'' + full['id'] + '\')">\n' +
+                            '    <i class="layui-icon">&#xe619;</i>\n' +
+                            '  </button>&nbsp;&nbsp;\n' +
+                            '  <button class="layui-btn layui-btn-sm" onclick="downRecordSort(\'' + full['id'] + '\')">\n' +
+                            '    <i class="layui-icon">&#xe61a;</i>\n' +
+                            '  </button>\n' +
+                            '</div>';
+                    }
+                },
+                {
+                    'targets': 7,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+
+                        var date = new Date(parseInt(data));
+                        return date.Format("yyyy-MM-dd hh:mm");
+                    }
+                },
+                {
+                    'targets': 8,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta) {
+
+
+                        return '<div class="layui-btn-group"><button class="layui-btn layui-btn-sm" onclick="editRecord(\'' + data + '\')"><i class="layui-icon"></i></button><button class="layui-btn layui-btn-sm" onclick="deleteRecord(\'' + data + '\')"><i class="layui-icon"></i></button></div>';
+                    }
+                }
+
+
+            ]
+        });
+    }
+
+    var table = initDataTables();
+
+    function retrieveData(sSource, aoData, fnCallback) {
+        $.ajax({
+            url: sSource,//这个就是请求地址对应sAjaxSource
+            data: JSON.stringify(aoData),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,
+            success: function (result) {
+                fnCallback(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+            },
+            error: function (msg) {
+            }
+        });
+
+    }
+
+    function editRecord(id) {
+        var url = "${ctxPath!}/admin/flownode/node/save?id=" + id;
+        var name = "节点类型编辑";
+        //检测是否可以编辑 未解绑connction 不允许编辑。
+        layer.open({
+            type: 2,
+            title: name,
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['85%', '92%'],
+            content: url
+        });
+
+    }
+
+    function deleteRecord(id) {
+
+        layer.confirm('删除须谨慎，确认要删除吗？', function (index) {
+            //ajax
+            $.ajax({
+                url: '${ctxPath!}/admin/flownode/node/delete',//这个就是请求地址对应sAjaxSource
+                data: JSON.stringify({id: id}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                type: 'post',
+                dataType: 'json',
+                contentType: "application/json",
+                async: true,
+                success: function (result) {
+                    if (result.status == 200) {
+                        layer.msg('已删除!', {icon: 1, time: 1300});
+                        window.location.reload();
+                    } else {
+                        layer.msg(result.msg, {icon: 1, time: 2000});
+                    }
+                    //parent.$('.btn-refresh').click();
+                    //window.location.reload();
+                },
+                error: function (msg) {
+                    layer.msg('操作失败,服务器错误', {icon: 1, time: 1000});
+                }
+            });
+
+        });
+
+    }
+
+    function upRecordSort(id) {
+
+        $.ajax({
+            url: '${ctxPath!}/admin/flownode/node/changeSort',//这个就是请求地址对应sAjaxSource
+            data: JSON.stringify({id: id, type: "up"}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,
+            success: function (result) {
+                if (result.status == 200) {
+                    layer.msg('顺序调整成功!', {icon: 1, time: 1300});
+                    window.location.reload();
+                } else {
+                    layer.msg(result.msg, {icon: 1, time: 2000});
+                }
+                //parent.$('.btn-refresh').click();
+                //window.location.reload();
+            },
+            error: function (msg) {
+                layer.msg('操作失败,服务器错误', {icon: 1, time: 1000});
+            }
+        });
+
+
+    }
+
+    function downRecordSort(id) {
+        $.ajax({
+            url: '${ctxPath!}/admin/flownode/node/changeSort',//这个就是请求地址对应sAjaxSource
+            data: JSON.stringify({id: id, type: "down"}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,
+            success: function (result) {
+                if (result.status == 200) {
+                    layer.alert('顺序调整成功!', function (cindex) {
+                        window.location.reload();
+                        layer.close(cindex);
+                    });
+
+                } else {
+                    layer.msg(result.msg, {icon: 1, time: 2000});
+                }
+                //parent.$('.btn-refresh').click();
+                //window.location.reload();
+            },
+            error: function (msg) {
+                layer.msg('操作失败,服务器错误', {icon: 1, time: 1000});
+            }
+        });
+
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

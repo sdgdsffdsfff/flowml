@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>一站式机器学习平台</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="${ctxPath!}/statics/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="${ctxPath!}/statics/vendor/bootstrap-select2/css/select2.css" rel="stylesheet">
+
+    <link href="${ctxPath!}/statics/vendor/bootstrap-select2/select2-bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="${ctxPath!}/statics/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="${ctxPath!}/statics/css/sb-admin-2.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="${ctxPath!}/statics/vendor/layui/css/layui.css" media="all">
+    <!-- Custom Fonts -->
+    <link href="${ctxPath!}/statics/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .form-group {
+            padding-left: 15px;
+            padding-right: 15px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+<!-- Navigation -->
+<div id="full-page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">流程节点创建</h1>
+
+
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+
+    <!-- /.row -->
+    <div class="row" style="padding:10px;">
+        <div class="col-lg-12">
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <form role="form" method="post" action="#" id="form-node-add"
+                          style="padding:10px;margin:10px;">
+                        <fieldset class="layui-elem-field site-demo-button">
+                            <legend>节点基本属性添加</legend>
+                            <div>
+
+
+                                <div class="form-group">
+                                    <label>节点类型名称</label>
+                                    <input class="form-control" name="name" value="">
+                                    <p class="help-block">数据节点类型名称</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>节点组选择</label>
+                                    <select id="nodeGroupSelect" class="form-control select2-single" name="groupId">
+                                        <option></option>
+
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>节点描述</label>
+                                    <textarea class="form-control" rows="3"
+                                              name="comment"></textarea>
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+
+
+                        <fieldset class="layui-elem-field site-demo-button" id="expandPropsFieldSet">
+                            <legend>动态属性添加
+                                <div class="layui-btn-group">
+                                    <button class="layui-btn layui-btn-primary layui-btn-sm"
+                                            onclick="addDynamicPropLine();return false">添加属性列
+                                    </button>
+                                </div>
+                            </legend>
+                            <div id="expandPropsFieldDiv" style="padding:10px;">
+
+                                <div class="row propelement" style="margin: 10px 5px;">
+
+                                    <div class="col-xs-6 col-md-2">
+
+                                        <div class="form-group">
+                                            <label>属性名</label>
+                                            <input class="form-control" name="prop[][name]" value="">
+                                            <p class="help-block">动态属性名</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xs-6 col-md-3">
+                                        <div class="form-group">
+                                            <label>属性输入类型</label>
+                                            <select class="proptypeselect form-control select2-single"
+                                                    name="prop[][type]">
+                                                <option value="input">输入框</option>
+                                                <option value="select">单选框</option>
+                                                <option value="multiselect">多选框</option>
+                                                <option value="radio">单选按钮</option>
+                                                <option value="checkbox">多选按钮</option>
+                                                <option value="file">文件上传</option>
+                                                <option value="dateSelect">日期选择</option>
+                                                <option value="dateRanger">日期范围选择</option>
+                                                <option value="range">范围框</option>
+                                            </select>
+                                            <p class="help-block">动态属性输入类型</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xs-6 col-md-2">
+                                        <div class="form-group">
+                                            <label>属性中文描述</label>
+                                            <input class="form-control" name="prop[][title]" value="">
+                                            <p class="help-block">属性中文描述</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xs-6 col-md-5">
+                                        <div class="form-group">
+                                            <label>属性值设置</label>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <input class="form-control" name="prop[][optionValue]" value=""
+                                                           placeholder="可选值">
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input class="form-control" name="prop[][defaultValue]" value=""
+                                                           placeholder="默认值">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button class="layui-btn layui-btn-sm"
+                                                            onClick="deleteDynamicPropLine(this);return false;"><i
+                                                            class="layui-icon"></i></button>
+                                                </div>
+                                            </div>
+                                            <p class="help-block">属性可选值、属性默认值设置，可选值多个用,号隔开</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+
+
+                        <button type="submit" class="btn btn-default">保存</button>
+                        <button type="reset" class="btn btn-default">重设</button>
+                    </form>
+                </div>
+                <!-- /.col-lg-6 (nested) -->
+
+            </div>
+
+
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /#page-wrapper -->
+
+
+<!-- jQuery -->
+
+<script src="${ctxPath!}/statics/vendor/jquery/jquery.min.js"></script>
+<script src="${ctxPath!}/statics/js/jquery.serializejson.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="${ctxPath!}/statics/vendor/metisMenu/metisMenu.min.js"></script>
+<script src="${ctxPath!}/statics/js/jquery-ui.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="${ctxPath!}/statics/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript"
+        src="${ctxPath!}/statics/vendor/jquery.validation/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/jquery.validation/1.14.0/messages_zh.min.js"></script>
+
+<script type="text/javascript" src="${ctxPath!}/statics/vendor/layui/layui.all.js"></script>
+
+<script src="${ctxPath!}/statics/vendor/bootstrap-select2/js/select2.full.js"/>
+<script src="${ctxPath!}/statics/vendor/bootstrap-select2/js/i18n/zh-CN.js"/>
+<!-- Custom Theme JavaScript -->
+<script src="${ctxPath!}/statics/js/sb-admin-2.js"></script>
+<script type="text/javascript">
+    function addDynamicPropLine() {
+        var proplength = $("#expandPropsFieldSet").find(".propelement").length;
+        $("#expandPropsFieldDiv").append('<div class="row propelement"style="margin: 10px 5px;"><div class="col-xs-6 col-md-2"><div class="form-group"><label>属性名</label><input class="form-control"name="prop[][name]"value=""><p class="help-block">动态属性名</p></div></div><div class="col-xs-6 col-md-3"><div class="form-group"><label>属性输入类型</label><select class="proptypeselect form-control select2-single"name="prop[][type]"><option value="input">input</option><option value="select">select</option><option value="multiselect">multiselect</option><option value="radio">radio</option><option value="checkbox">checkbox</option><option value="file">fileUpload</option><option value="dateSelect">dateSelect</option><option value="dateRanger">dateRanger</option><option value="ranger">ranger</option></select><p class="help-block">动态属性输入类型</p></div></div><div class="col-xs-6 col-md-2"><div class="form-group"><label>属性中文描述</label><input class="form-control"name="prop[][title]"value=""><p class="help-block">属性中文描述</p></div></div><div class="col-xs-6 col-md-5"><div class="form-group"><label>属性值设置</label><div class="row"><div class="col-md-5"><input class="form-control"name="prop[][optionValue]"value=""placeholder="可选值"></div><div class="col-md-5"><input class="form-control"name="prop[][defaultValue]"value=""placeholder="默认值"></div><div class="col-md-2"><button class="layui-btn layui-btn-sm"onClick="deleteDynamicPropLine(this);return false;"><i class="layui-icon"></i></button></div></div><p class="help-block">属性可选值、属性默认值设置，可选值多个用,号隔开</p></div></div></div>');
+        //alert($("#expandPropsFieldSet").find(".propelement").length);
+    }
+
+    function deleteDynamicPropLine(ele) {
+        $(ele).parents("div.propelement").remove();
+    }
+    function initSelectGroup() {
+        $.ajax({
+            url: '${ctxPath!}/admin/flownode/node/group/list',//这个就是请求地址对应sAjaxSource
+            data: JSON.stringify({}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,
+            success: function (result) {
+                if (result.status == 200) {
+                    var datas = result.obj;
+                    var selects = [];
+                    for (index in datas) {
+                        selects.push({id: datas[index].id, text: datas[index].name});
+                    }
+                    $("#nodeGroupSelect").select2({
+                        theme: "bootstrap",
+                        placeholder: "选择数据节点组类型",
+                        data: selects
+                    }).on("change", function (e) {
+                        var groupId = $("#nodeGroupSelect").val();
+                    });
+                } else {
+                    layer.msg(result.msg, {icon: 1, time: 2000});
+                }
+                //parent.$('.btn-refresh').click();
+                //window.location.reload();
+            },
+            error: function (msg) {
+                layer.msg('操作失败,服务器错误', {icon: 1, time: 1000});
+            }
+        });
+
+    }
+
+
+    $(function () {
+        initSelectGroup();
+        $('#form-node-add').validate({
+            onkeyup: false,
+            focusCleanup: true,
+            success: "valid",
+            submitHandler: function (form) {
+                //ajax提交
+                var formdata = $(form).serializeJSON();
+                $.ajax({
+                    url: '${ctxPath!}/admin/flownode/node/save',//这个就是请求地址对应sAjaxSource
+                    data: JSON.stringify(formdata),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: "application/json",
+                    async: true,
+                    success: function (result) {
+                        if (result.status == 200) {
+                            layer.alert('保存成功', function (cindex) {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.location.reload();
+                                parent.layer.close(index);
+                                layer.close(cindex);
+                            });
+
+
+                        } else {
+                            layer.msg(result.msg, {icon: 1, time: 2000});
+                        }
+
+                    },
+                    error: function (msg) {
+                        layer.msg('服务器错误', {icon: 1, time: 1000});
+                    }
+                });
+
+            }
+        });
+
+    });
+
+
+</script>
+
+
+</body>
+
+</html>

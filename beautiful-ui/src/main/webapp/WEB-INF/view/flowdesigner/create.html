@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>一站式机器学习平台</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="${ctxPath!}/statics/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="${ctxPath!}/statics/vendor/bootstrap-select2/css/select2.css" rel="stylesheet">
+
+    <link href="${ctxPath!}/statics/vendor/bootstrap-select2/select2-bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="${ctxPath!}/statics/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="${ctxPath!}/statics/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="${ctxPath!}/statics/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="${ctxPath!}/statics/css/flowchart.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <% include("/basic/top.html"){} %>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">流程创建</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        流程面板
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div id="drawingArea" style="width: 100%; min-height: 800px;">
+                                <div id="rubberband" style="border: 1px solid green; display: none;"></div>
+                                <div class="startpoint point window node"
+                                     style="left: 150px; top: 80px; background-color: green" data-nodetype="startpoint"
+                                     id="startpoint">Start
+                                </div>
+                                <div class="window menu"
+                                     style="right: 20px;top:80px;min-width: 150px;padding:5px;margin:3px;"
+                                     id="menuContainer">
+                                    <p style="text-align: center">操作栏</p>
+
+                                    <select id="drawingAreaNodeGroup" class="form-control select2-single"
+                                            style="padding:3px;">
+                                        <option></option>
+                                    </select>
+                                    <div class="menu_button_container" style="padding:3px;">
+                                        <button class="flownode button btn btn-block btn-outline btn-success">数据导入
+                                        </button>
+                                        <button type="button"
+                                                class="flownode button btn btn-outline btn-block btn-success">数据导出
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <div class="endpoint point window node" style="left: 150px; top: 350px"
+                                     data-nodetype="endpoint" id="endpoint">End
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <!-- /.row (nested) -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+
+<script src="${ctxPath!}/statics/vendor/jquery/jquery.min.js"></script>
+<script src="${ctxPath!}/statics/js/jquery.serializejson.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="${ctxPath!}/statics/vendor/metisMenu/metisMenu.min.js"></script>
+<script src="${ctxPath!}/statics/js/jquery-ui.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="${ctxPath!}/statics/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+
+<script src="${ctxPath!}/statics/vendor/bootstrap-select2/js/select2.full.js"/>
+<script src="${ctxPath!}/statics/vendor/bootstrap-select2/js/i18n/zh-CN.js"/>
+
+
+<!-- Custom Theme JavaScript -->
+<script src="${ctxPath!}/statics/js/sb-admin-2.js"></script>
+
+
+<script src="http://cdn.bootcss.com/jsPlumb/2.0.7/jsPlumb.min.js"></script>
+<script src="http://cdn.bootcss.com/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all.js"></script>
+<script src="${ctxPath!}/statics/js/flowchart.js"></script>
+<script type="text/javascript">
+    function showNodeView(groupId) {
+
+        $.ajax({
+            url: '${ctxPath!}/flowdesigner/listNode',//这个就是请求地址对应sAjaxSource
+            data: JSON.stringify({groupId: groupId}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,
+            success: function (result) {
+                if (result.status == 200) {
+                    //成功
+                    var datas = [];
+                    for (rdata in result.obj) {
+                        datas.push({id: rdata.id, text: rdata.name});
+                    }
+                    //$("#drawingAreaNodeGroup")
+
+
+                }
+            },
+            error: function (msg) {
+
+            }
+        });
+
+    }
+
+    var datas = [
+
+        {
+            id: 0,
+            text: 'enhancement'
+        },
+        {
+            id: 1,
+            text: 'bug'
+        },
+        {
+            id: 2,
+            text: 'duplicate'
+        },
+        {
+            id: 3,
+            text: 'invalid'
+        },
+        {
+            id: 4,
+            text: 'wontfix'
+        }
+    ];
+    $("#drawingAreaNodeGroup").select2({
+        theme: "bootstrap",
+        placeholder: "选择数据节点类型",
+        data: datas
+    }).on("change", function (e) {
+
+        var groupId = $("#drawingAreaNodeGroup").val();
+        //获取组id
+        showNodeView(groupId);
+
+
+    });
+    jsPlumb.ready(function () {
+
+        //获取节点组信息
+        $.ajax({
+            url: '${ctxPath!}/flowdesigner/listNodeGroup',//这个就是请求地址对应sAjaxSource
+            data: JSON.stringify({}),//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json",
+            async: true,
+            success: function (result) {
+                if (result.status == 200) {
+                    //成功
+                    var datas = [];
+                    for (rdata in result.obj) {
+                        datas.push({id: rdata.id, text: rdata.name});
+                    }
+                    //$("#drawingAreaNodeGroup")
+
+
+                }
+            },
+            error: function (msg) {
+
+            }
+        });
+        jsPlumb.draggable($(".window"), {grid: [10, 10]});
+
+        jsPlumb.bind("dblclick", function (conn, originalEvent) {
+            jsPlumb.detach(conn);
+        });
+        // 连接事件
+        jsPlumb.bind("jsPlumbConnection", function (conn, originalEvent) {
+            if (conn.connection.sourceId == conn.connection.targetId) {
+                jsPlumb.detach(conn);
+                alert("不能连接自己！");
+                return false;
+            }
+            $.each(jsPlumb.getEndpoints(conn.source), function (i, el) {
+                if (conn.connection != el.connections[0] &&
+                    (el.connections[0].targetId == conn.targetId || (el.connections[0].sourceId == conn.targetId && el.connections[0].targetId == conn.sourceId))) {
+                    jsPlumb.detach(conn);
+                    alert("不能重复连接！");
+                    return false;
+                }
+            });
+        });
+
+        jsPlumb.importDefaults({
+
+            DragOptions: {cursor: 'pointer', zIndex: 2000},
+            EndpointStyles: [{fillStyle: '#225588'}, {fillStyle: '#558822'}],
+            Endpoints: [["Dot", {radius: 2}], ["Dot", {radius: 2}]],
+            Connector: ["Flowchart", {stub: [15, 25], gap: 0, cornerRadius: 5, alwaysRespectStubs: true}],
+            ConnectionOverlays: [
+                ["Arrow", {
+                    location: 1,
+                    id: "arrow",
+                    length: 20,
+                    foldback: 0.4
+                }],
+                ["Label", {
+                    location: 0.1,
+                    id: "label",
+                    cssClass: "aLabel"
+                }]
+            ]
+        });
+
+        $('#' + htmlBase).on('click', '[data-nodetype="closeimg"]', function () {
+            var $theNode = $(this).parent();
+            jsPlumb.detachAllConnections($theNode);
+            jsPlumb.removeAllEndpoints($theNode);
+            $theNode.remove();
+        });
+
+        $('#' + htmlBase).on('dblclick', '[data-nodetype="task"]', function () {
+            var text = $(this).text();
+            $(this).html("");
+            $(this).append('<input class="detail_text" type="text" value="' + text + '" />');
+            $("input[type='text']").mouseleave(function () {
+                $(this).parent().html("<div class='detail_text'>" + $("input[type='text']").val() + "</div>");
+            });
+        });
+
+        //todo 1.点击flownode 添加节点
+        //todo 2.双击弹窗model 设置节点属性
+        //todo 3.右键显示设置属性
+        $(".flownode").click(function () {
+            addTask();
+        });
+
+
+        // $(".button_add_task").click(function () {
+        // 	addTask();
+        // });
+        //
+        // $(".button_add_decision").click(function () {
+        // 	addDecision();
+        // });
+        //
+        // $('#saveButton').click(function(){
+        // 	saveFlowchart();
+        // });
+        //
+        // $('#loadButton').click(function(){
+        // 	loadFlowchart();
+        // });
+        loadFlowchart();
+    });
+    $(function () {
+
+
+    });
+
+
+</script>
+
+</body>
+
+</html>

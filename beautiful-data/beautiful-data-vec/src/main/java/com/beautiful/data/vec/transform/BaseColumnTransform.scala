@@ -1,7 +1,7 @@
 package com.beautiful.data.vec.transform
 
 import com.alibaba.fastjson.JSON
-import com.beautiful.api.metadata.ColumnMetaData
+import com.beautiful.api.column.DataColumn
 import com.beautiful.api.ops.Transform
 import com.beautiful.api.schema.Schema
 import com.beautiful.api.writable.WritableValue
@@ -18,7 +18,7 @@ abstract class BaseColumnTransform extends Transform {
 
   protected val columnName: String
 
-  def transformColumnMeta(oldmeta: ColumnMetaData): ColumnMetaData
+  def transformColumnMeta(oldmeta: DataColumn): DataColumn
 
   def mapColumn(value: WritableValue):WritableValue
 
@@ -30,9 +30,7 @@ abstract class BaseColumnTransform extends Transform {
   }
 
   override def transform(implicit schema: Schema): Schema = {
-    val oldmetas = schema.columnMetaDatas
-      //oldmetas.zipWithIndex.map{case (oldmeta,index) => if (index==columnNumber) transformColumnMeta(oldmeta) else oldmeta)}
-    return Schema.newSchema(oldmetas.map(oldmeta => if (oldmeta eq oldmetas.toSeq(columnNumber)) transformColumnMeta(oldmeta) else oldmeta).toSeq);
-
+    val oldmetas = schema.dataColumns
+    Schema.newSchema(oldmetas.map(oldmeta => if (oldmeta eq oldmetas(columnNumber)) transformColumnMeta(oldmeta) else oldmeta))
   }
 }

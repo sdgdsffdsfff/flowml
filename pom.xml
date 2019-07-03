@@ -12,8 +12,8 @@
   <properties>
       <spark.version>2.2.0</spark.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <spring.version>4.3.3.RELEASE</spring.version>
-      <spring.integration.version>4.3.5.RELEASE</spring.integration.version>
+      <spring.version>4.3.16.RELEASE</spring.version>
+      <spring.integration.version>4.3.17.RELEASE</spring.integration.version>
       <curator.version>2.9.1</curator.version>
       <zkclient.version>0.1</zkclient.version>
       <zk.version>3.4.5</zk.version>
@@ -188,27 +188,27 @@
       <module>beautiful-core</module>
       <module>beautiful-flow</module>
   </modules>
-    <profiles>
-        <profile>
-            <id>development</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <package.environment>development</package.environment>
-            </properties>
-        </profile>
-        <profile>
-            <id>production</id>
-            <properties>
-                <package.environment>production</package.environment>
-            </properties>
-        </profile>
-        <profile>
-            <id>testing</id>
-            <properties>
-                <package.environment>testing</package.environment>
-            </properties>
-        </profile>
-    </profiles>
+    <!--<profiles>-->
+    <!--<profile>-->
+    <!--<id>development</id>-->
+    <!--<activation>-->
+    <!--<activeByDefault>true</activeByDefault>-->
+    <!--</activation>-->
+    <!--<properties>-->
+    <!--<package.environment>development</package.environment>-->
+    <!--</properties>-->
+    <!--</profile>-->
+    <!--<profile>-->
+    <!--<id>production</id>-->
+    <!--<properties>-->
+    <!--<package.environment>production</package.environment>-->
+    <!--</properties>-->
+    <!--</profile>-->
+    <!--<profile>-->
+    <!--<id>testing</id>-->
+    <!--<properties>-->
+    <!--<package.environment>testing</package.environment>-->
+    <!--</properties>-->
+    <!--</profile>-->
+    <!--</profiles>-->
 </project>
